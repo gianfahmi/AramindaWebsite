@@ -1,0 +1,18 @@
+{
+  "title": "ARAMINDA | Kenali diri, Temukan arah",
+  "description": "Menjembatani Potensi Siswa, Ekspektasi Orang Tua, dan Kesiapan Masa Depan Melalui Psikologi Perkembangan Remaja.",
+  "language": "id",
+  "robots": {
+    "index": false
+  },
+  "icons": {
+    "icon": "/.figma/make/favicon.png"
+  },
+  "openGraph": {
+    "image": "/.figma/make/social-image.png"
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}

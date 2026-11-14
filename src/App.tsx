@@ -550,7 +550,7 @@ export default function App() {
                   <h3
                     className="relative z-20 -mt-2 rounded-[.7rem] bg-[#ffd050] px-4 py-2 text-center text-lg font-normal leading-6 text-[#323232] shadow-sm transition-transform duration-300 ease-out [transform:rotate(var(--base-tilt))] group-hover/profile:[transform:rotate(var(--counter-tilt))] motion-reduce:transform-none motion-reduce:transition-none"
                     style={{
-                      fontFamily: '"Lexend:Regular", "Lexend", sans-serif',
+                      fontFamily: '"Lexend", sans-serif',
                       "--base-tilt": `${member.nameRotation}deg`,
                       "--counter-tilt": `${-member.nameRotation}deg`,
                     } as React.CSSProperties}
@@ -560,7 +560,7 @@ export default function App() {
                   <p
                     className="relative z-20 -mt-0.5 rounded-[.65rem] bg-[#6a5e73] px-3 py-2 text-center text-xs text-white transition-transform duration-300 ease-out [transform:rotate(var(--base-tilt))] group-hover/profile:[transform:rotate(var(--counter-tilt))] motion-reduce:transform-none motion-reduce:transition-none"
                     style={{
-                      fontFamily: '"Lexend:Regular", "Lexend", sans-serif',
+                      fontFamily: '"Lexend", sans-serif',
                       "--base-tilt": `${member.roleRotation}deg`,
                       "--counter-tilt": `${-member.roleRotation}deg`,
                     } as React.CSSProperties}

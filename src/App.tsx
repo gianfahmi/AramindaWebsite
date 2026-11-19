@@ -1,4 +1,5 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
+import { PortalMockup } from "@/components/PortalMockup"
 
 const ArrowUpRight = () => (
   <svg aria-hidden="true" viewBox="0 0 24 24" className="size-4" fill="none">
@@ -15,18 +16,49 @@ const Check = () => (
 const challenges = [
   {
     number: "01",
-    title: "Cemas menentukan pilihan",
-    text: "Sulit membedakan hobi sesaat, tekanan tren, dan bakat yang benar-benar dimiliki.",
+    title: "Laporan angka tanpa aksi nyata",
+    text: "Siswa dan orang tua kerap hanya menerima skor IQ atau label kaku tanpa panduan stimulasi praktis di kelas maupun di rumah.",
   },
   {
     number: "02",
-    title: "Ekspektasi yang tidak selaras",
-    text: "Pilihan jurusan sering menjadi sumber jarak dan konflik antara siswa dan orang tua.",
+    title: "Kesenjangan ekspektasi rumah & sekolah",
+    text: "Mulai dari kecemasan soal kesiapan masuk SD dan gaya belajar di tingkat dasar hingga pilihan jurusan di tingkat menengah.",
   },
   {
     number: "03",
-    title: "Hasil tes tanpa arah",
-    text: "Deretan angka dan istilah abstrak tidak cukup membantu menentukan langkah berikutnya.",
+    title: "Pendekatan usia yang tergeneralisasi",
+    text: "Tes standar kaku mengabaikan dinamika spesifik dari kematangan sensori-motorik usia dini hingga fluktuasi emosi remaja.",
+  },
+]
+
+const stages = [
+  {
+    stage: "PAUD & TK",
+    age: "Usia 3–6 Tahun",
+    focus: "Kesiapan Masuk SD",
+    text: "Memetakan kematangan sosio-emosional, koordinasi motorik kasar dan halus, rentang atensi, kontrol impuls, serta kemandirian pra-SD tanpa tes Calistung yang kaku.",
+    instruments: ["NST", "Frostig", "Bender-Gestalt", "Observasi Klinis"],
+  },
+  {
+    stage: "SD",
+    age: "Kelas Rendah & Tinggi",
+    focus: "Gaya Belajar & Fungsi Eksekutif",
+    text: "Mengidentifikasi modalitas belajar dominan (Visual, Auditori, Kinestetik), daya konsentrasi, kecepatan persepsi, serta deteksi dini kesulitan belajar agar terhindar dari burnout dini.",
+    instruments: ["CPM", "Adaptasi WISC", "Inventori Gaya Belajar", "Skrining Eksekutif"],
+  },
+  {
+    stage: "SMP",
+    age: "Remaja Awal",
+    focus: "Regulasi Emosi & Minat Awal",
+    text: "Memahami dinamika psikososial remaja awal, regulasi emosi, pola penyesuaian sosial bersama teman sebaya, dan eksplorasi awal minat bakat bidang studi.",
+    instruments: ["SPM", "Standard Proyektif Gambar", "Kuesioner Minat Pra-Remaja"],
+  },
+  {
+    stage: "SMA & SMK",
+    age: "Remaja Akhir",
+    focus: "Penjurusan, Vokasi & Karier",
+    text: "Mengukur kapasitas intelektual komprehensif, daya tahan stres, orientasi studi perguruan tinggi maupun vokasi, serta kesiapan transisi menuju dewasa muda.",
+    instruments: ["IST", "RMIB", "Pauli", "Baterai Proyektif (WZT, BAUM, DAP)"],
   },
 ]
 
@@ -34,16 +66,16 @@ const comparisonOptions = [
   {
     title: "Psikotes konvensional",
     items: [
-      ["Landasan teoritis", "Psikometri kaku ala HR korporat"],
-      ["Format laporan", "Dokumen laporan teks tebal dan satu arah"],
-      ["Hasil akhir", "Rekomendasi jurusan kuliah yang cenderung generik"],
+      ["Landasan teoritis", "Tes kognitif/IQ semata, Calistung kaku, atau psikometri ala HR"],
+      ["Format laporan", "Dokumen teks tebal dengan istilah klinis abstrak dan satu arah"],
+      ["Hasil akhir", "Sekadar status Siap/Tidak Siap atau rekomendasi jurusan generik"],
     ],
   },
   {
     title: "Metodologi biometrik",
     items: [
-      ["Landasan teoritis", "Analisis sidik jari dengan validitas klinis diragukan"],
-      ["Format laporan", "Pelabelan tipe kepribadian statis seumur hidup"],
+      ["Landasan teoritis", "Analisis sidik jari dengan validitas klinis yang diragukan"],
+      ["Format laporan", "Pemindaian instan tanpa observasi & pelabelan statis"],
       ["Hasil akhir", "Saran pengembangan diri yang kaku dan spekulatif"],
     ],
   },
@@ -51,54 +83,73 @@ const comparisonOptions = [
     title: "Pendekatan Araminda",
     featured: true,
     items: [
-      ["Landasan teoritis", "Psikologi Perkembangan Remaja yang klinis dan valid"],
-      ["Format laporan", "Playbook visual interaktif untuk siswa, orang tua, dan sekolah"],
-      ["Hasil akhir", "Roadmap kesiapan emosi dan strategi studi komprehensif"],
+      ["Landasan teoritis", "Psikologi Tumbuh Kembang Anak & Remaja yang klinis dan valid"],
+      ["Format laporan", "Playbook visual interaktif untuk anak, orang tua, wali kelas, & BK"],
+      ["Hasil akhir", "Peta kesiapan sekolah, gaya belajar, stimulasi, & arah masa depan"],
     ],
   },
 ]
 
 const outputs = [
   {
-    label: "Untuk siswa",
-    title: "Personal Future Playbook",
-    text: "Peta eksplorasi diri visual berisi rekomendasi jurusan, gaya belajar, pemicu stres, dan strategi pengembangan diri.",
+    label: "Untuk siswa & anak",
+    title: "Personal Growth & Future Playbook",
+    text: "Peta visual perkembangan berisi indeks kesiapan sekolah (TK/SD), profil gaya belajar dominan (Visual, Auditori, Kinestetik), pemicu stres, hingga arah minat studi dan karier.",
   },
   {
     label: "Untuk orang tua",
-    title: "Parent–Teen Synergy Report",
-    text: "Panduan mendampingi pilihan karier anak tanpa konflik, dilengkapi sesi bersama Psikolog Anak & Remaja.",
+    title: "Parent Synergy & 2 Sesi Parenting",
+    text: "Panduan praktis pola asuh dan stimulasi tanpa konflik di rumah, dilengkapi Sesi Seminar Parenting Gratis saat Hari-H tes serta Dialog Interaktif Pasca-Asesmen bersama Psikolog.",
   },
   {
-    label: "Untuk sekolah",
-    title: "BK Executive Dashboard",
-    text: "Analisis agregat per angkatan untuk memetakan kekuatan, potensi konflik, dan strategi bimbingan selama satu tahun.",
+    label: "Untuk sekolah, wali kelas & BK",
+    title: "Classroom & BK Executive Dashboard",
+    text: "Mendukung seleksi PPDB yang objektif, pembagian kelas seimbang sejak hari pertama, deteksi dini anak yang butuh perhatian khusus, hingga analisis angkatan SMP/SMA.",
   },
 ]
 
-const outcomes = [
-  {
-    period: "1–3 bln",
-    label: "Jangka pendek",
-    text: "Kecemasan terkait pilihan jurusan mulai menurun dan dialog positif antara orang tua dan anak mulai terbuka.",
-  },
-  {
-    period: "3–6 bln",
-    label: "Jangka menengah",
-    text: "Belajar menjadi lebih efektif sesuai cognitive style siswa, disertai kesiapan mental menghadapi seleksi perguruan tinggi.",
-  },
-  {
-    period: "6+ bln",
-    label: "Jangka panjang",
-    text: "Transisi ke perguruan tinggi lebih mulus, risiko salah jurusan menurun, dan ketahanan emosional semakin kuat.",
-  },
-]
+const outcomesByTrack = {
+  early: [
+    {
+      period: "1–3 bln",
+      label: "Jangka pendek",
+      text: "Adaptasi kelas jauh lebih mulus di awal tahun ajaran; wali kelas dan orang tua memiliki kesepahaman positif dalam mendampingi anak.",
+    },
+    {
+      period: "3–6 bln",
+      label: "Jangka menengah",
+      text: "Fokus dan partisipasi belajar meningkat karena metode pengajaran di kelas selaras dengan gaya belajar anak serta stimulasi tepat sasaran.",
+    },
+    {
+      period: "6+ bln",
+      label: "Jangka panjang",
+      text: "Transisi TK ke SD maupun SD kelas bawah ke atas berjalan sukses, fondasi fungsi eksekutif kuat, dan anak terhindar dari trauma akademik dini.",
+    },
+  ],
+  teen: [
+    {
+      period: "1–3 bln",
+      label: "Jangka pendek",
+      text: "Kecemasan terkait pilihan jurusan mulai menurun dan dialog positif antara orang tua dan anak mulai terbuka.",
+    },
+    {
+      period: "3–6 bln",
+      label: "Jangka menengah",
+      text: "Belajar menjadi lebih efektif sesuai cognitive style siswa, disertai kesiapan mental menghadapi seleksi perguruan tinggi maupun vokasi.",
+    },
+    {
+      period: "6+ bln",
+      label: "Jangka panjang",
+      text: "Transisi ke perguruan tinggi lebih mulus, risiko salah jurusan menurun, dan ketahanan emosional semakin kuat.",
+    },
+  ],
+}
 
 const steps = [
-  ["Konsultasi awal", "Memetakan kebutuhan bersama Kepala Sekolah dan Tim BK."],
-  ["Asesmen interaktif", "Pelaksanaan yang efisien, kondusif, dan ramah bagi siswa."],
-  ["Laporan tiga arah", "Playbook siswa, laporan orang tua, dan dashboard sekolah."],
-  ["Sesi sinergi", "Pemaparan untuk sekolah dan sesi interaktif bersama orang tua."],
+  ["Konsultasi awal & pemetaan kebutuhan", "Diskusi bersama Kepala Sekolah, Tim Kurikulum, Wali Kelas, atau Tim BK untuk menyesuaikan tujuan asesmen."],
+  ["Asesmen ramah anak & parenting hari-H", "Pelaksanaan yang menyenangkan dan kondusif bagi siswa, berjalan paralel dengan Sesi Seminar Parenting Gratis untuk orang tua."],
+  ["Laporan tiga arah", "Playbook anak & siswa, panduan stimulasi orang tua, serta dashboard analisis kelas dan angkatan untuk sekolah."],
+  ["Penyerahan dashboard & sesi sinergi", "Pemaparan profil angkatan kepada dewan guru/BK dan sesi dialog interaktif pasca-asesmen bersama orang tua."],
 ]
 
 const team = [
@@ -138,9 +189,44 @@ const team = [
     roleRotation: 0.47,
     description: "Memastikan pengembangan berjalan terstruktur, kolaboratif, dan tepat sasaran hingga implementasi.",
   },
+  {
+    name: "Ayang Suhendar",
+    role: "Project Manager",
+    image: "/assets/ayang-suhendar.jpg",
+    imageRotation: -2.1,
+    nameRotation: 1.35,
+    roleRotation: -1.1,
+    description: "Mengawal koordinasi lapangan, ketepatan jadwal asesmen, serta kelancaran kolaborasi dengan pihak sekolah.",
+  },
+]
+
+const heroPhotos = [
+  {
+    src: "/students-study.jpg",
+    alt: "Siswa remaja berdiskusi dan belajar bersama",
+  },
+  {
+    src: "/students-early.jpg",
+    alt: "Siswa usia dini dan sekolah dasar membaca bersama di kelas",
+  },
 ]
 
 export default function App() {
+  const [heroPhotoIndex, setHeroPhotoIndex] = useState(0)
+  const [outcomeTrack, setOutcomeTrack] = useState<"early" | "teen">("early")
+  const outcomes = outcomesByTrack[outcomeTrack]
+
+  useEffect(() => {
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)")
+    if (reducedMotion.matches) return
+
+    const timer = window.setInterval(() => {
+      setHeroPhotoIndex((current) => (current + 1) % heroPhotos.length)
+    }, 4500)
+
+    return () => window.clearInterval(timer)
+  }, [])
+
   useEffect(() => {
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)")
     if (reducedMotion.matches) return
@@ -213,6 +299,7 @@ export default function App() {
           </a>
           <nav aria-label="Navigasi utama" className="hidden items-center gap-8 text-sm font-medium md:flex">
             <a href="#pendekatan" className="nav-link">Pendekatan</a>
+            <a href="#jenjang" className="nav-link">Jenjang</a>
             <a href="#hasil" className="nav-link">Hasil &amp; dampak</a>
             <a href="#proses" className="nav-link">Proses</a>
           </nav>
@@ -224,19 +311,19 @@ export default function App() {
         <div className="relative z-10 mx-auto grid max-w-7xl items-center gap-12 px-5 pb-24 pt-12 sm:px-8 lg:grid-cols-[1.03fr_.97fr] lg:px-12 lg:pb-28 lg:pt-20">
           <div className="mx-auto max-w-2xl text-center lg:mx-0 lg:text-left">
             <p className="mb-6 flex items-center justify-center gap-3 text-xs font-medium uppercase tracking-[0.2em] text-[#ffd252] lg:justify-start">
-              <span className="h-px w-9 bg-current" /> Psikologi perkembangan remaja
+              <span className="h-px w-9 bg-current" /> Psikologi tumbuh kembang anak &amp; remaja
             </p>
-            <h1 className="text-balance text-center text-[clamp(2.75rem,5.2vw,4.5rem)] font-medium leading-[1.02] tracking-[-.04em] lg:text-left">
-              Reimagining Early Adolescent & High School Adaptation
+            <h1 className="text-balance text-center text-[clamp(2.5rem,4.8vw,4.25rem)] font-medium leading-[1.04] tracking-[-.04em] lg:text-left">
+              Pemetaan Potensi &amp; Tumbuh Kembang Siswa Terpadu
             </h1>
             <p className="mx-auto mt-7 max-w-xl text-pretty text-base leading-7 text-white/78 sm:text-lg sm:leading-8 lg:mx-0">
-              Menjembatani potensi siswa, ekspektasi orang tua, dan kesiapan masa depan melalui pemetaan yang utuh, hangat, dan dapat ditindaklanjuti.
+              Menyelaraskan kesiapan belajar, gaya stimulasi, dan arah minat bakat dari usia dini hingga remaja—untuk kolaborasi yang utuh, hangat, dan bebas konflik antara siswa, orang tua, dan sekolah.
             </p>
             <div className="mt-9 flex flex-wrap justify-center gap-3 lg:justify-start">
               <a href="https://wa.me/6285110500252" className="button button-yellow">
                 Jadwalkan konsultasi <ArrowUpRight />
               </a>
-              <a href="#pendekatan" className="button button-ghost">Lihat pendekatan kami</a>
+              <a href="#jenjang" className="button button-ghost">Lihat layanan jenjang</a>
             </div>
           </div>
 
@@ -245,7 +332,7 @@ export default function App() {
               aria-hidden="true"
               viewBox="0 0 120 120"
               data-parallax="0.075"
-              className="absolute -right-1 top-5 z-10 size-20 text-[#ffd252] sm:-right-3 sm:top-7 sm:size-24 lg:-right-4 lg:top-8 lg:size-28"
+              className="absolute -right-1 top-5 z-20 size-20 text-[#ffd252] sm:-right-3 sm:top-7 sm:size-24 lg:-right-4 lg:top-8 lg:size-28"
               fill="none"
             >
               <g
@@ -264,14 +351,20 @@ export default function App() {
               </g>
               <circle cx="60" cy="60" r="20" fill="currentColor" />
             </svg>
-            <div data-parallax="0.025" className="relative ml-7 overflow-hidden rounded-[10rem_10rem_1.75rem_1.75rem] bg-[#c8b2e8] p-0 shadow-2xl shadow-black/20 sm:ml-10">
-              <img
-                src="/students-study.jpg"
-                alt="Siswa berdiskusi dan belajar bersama"
-                className="aspect-[4/5] w-full rounded-[9.5rem_9.5rem_1.25rem_1.25rem] object-cover transition-transform duration-300 ease-out hover:rotate-2 hover:scale-[1.06] motion-reduce:transform-none motion-reduce:transition-none"
-              />
+            <div data-parallax="0.025" className="relative ml-7 aspect-[4/5] overflow-hidden rounded-[10rem_10rem_1.75rem_1.75rem] bg-[#c8b2e8] p-0 shadow-2xl shadow-black/20 sm:ml-10">
+              {heroPhotos.map((photo, index) => (
+                <img
+                  key={photo.src}
+                  src={photo.src}
+                  alt={photo.alt}
+                  aria-hidden={index !== heroPhotoIndex}
+                  className={`absolute inset-0 size-full rounded-[9.5rem_9.5rem_1.25rem_1.25rem] object-cover transition-[opacity,transform] duration-1000 ease-in-out hover:rotate-2 hover:scale-[1.06] motion-reduce:transform-none motion-reduce:transition-none ${
+                    index === heroPhotoIndex ? "opacity-100" : "pointer-events-none opacity-0"
+                  }`}
+                />
+              ))}
             </div>
-            <div data-parallax="0.065" className="absolute -bottom-8 -left-2 z-10 max-w-[240px] rounded-[1.5rem] bg-white p-5 text-[#3c2863] shadow-xl sm:-left-8">
+            <div data-parallax="0.065" className="absolute -bottom-8 -left-2 z-20 max-w-[240px] rounded-[1.5rem] bg-white p-5 text-[#3c2863] shadow-xl sm:-left-8">
               <p className="text-3xl font-medium">3 arah</p>
               <p className="mt-1 text-sm leading-5 text-[#635771]">Siswa, orang tua, dan sekolah bergerak dalam satu bahasa.</p>
             </div>
@@ -281,8 +374,8 @@ export default function App() {
 
       <section data-reveal className="bg-[#ffd252] px-5 py-7 text-[#3d2865] sm:px-8">
         <div className="mx-auto flex w-full max-w-7xl justify-center">
-          <p className="typing-reveal w-full text-center text-lg font-medium leading-7 sm:text-xl lg:whitespace-nowrap">
-            Bukan sekadar psikotes. Sebuah peta jalan studi, karier, dan kesiapan emosi remaja.
+          <p className="typing-reveal w-full text-center text-lg font-medium leading-7 sm:text-xl">
+            Bukan sekadar psikotes. Peta kesiapan sekolah, gaya belajar, dan arah masa depan dari PAUD hingga SMA.
           </p>
         </div>
       </section>
@@ -291,9 +384,9 @@ export default function App() {
         <div className="grid gap-12 lg:grid-cols-[.8fr_1.2fr] lg:gap-20">
           <div>
             <p className="eyebrow">Mengapa ini penting</p>
-            <h2 className="section-title">Remaja butuh lebih dari sekadar angka.</h2>
+            <h2 className="section-title">Setiap anak butuh lebih dari sekadar angka.</h2>
             <p className="section-copy">
-              Di masa transisi, sistem emosi berkembang lebih cepat daripada fungsi pengambilan keputusan. Arahan yang tepat membantu kebingungan menjadi pertumbuhan.
+              Dari kematangan sensori-motorik usia dini hingga pencarian jati diri remaja, arahan yang tepat membantu kebingungan menjadi pertumbuhan.
             </p>
           </div>
           <div className="grid gap-4 sm:grid-cols-3">
@@ -316,15 +409,15 @@ export default function App() {
             </div>
             <div>
               <p className="eyebrow">Pendekatan Araminda</p>
-              <h2 className="section-title">Utuh, relevan, dan dipimpin ahli perkembangan.</h2>
+              <h2 className="section-title">Utuh, ramah anak, dan dipimpin ahli perkembangan.</h2>
               <p className="section-copy">
-                Seluruh instrumen dan metode analisis dirancang oleh Psikolog Spesialis Tumbuh Kembang Anak & Remaja—bukan sekadar penyederhanaan tes orang dewasa.
+                Seluruh instrumen observasi dan metode analisis dirancang langsung oleh Psikolog Klinis Spesialis Tumbuh Kembang Anak &amp; Remaja—bukan sekadar tes kaku yang menyamaratakan semua usia.
               </p>
               <ul className="mt-9 space-y-6">
                 {[
-                  ["Penyelarasan triad ekosistem", "Membangun bahasa bersama antara siswa, orang tua, dan sekolah."],
-                  ["Kesiapan yang menyeluruh", "Melihat kesiapan akademis dan emosional secara berdampingan."],
-                  ["Pemetaan yang mendalam", "Mengukur minat, gaya belajar, kematangan emosi, dan ketahanan stres."],
+                  ["Penyelarasan triad ekosistem", "Membangun bahasa bersama antara anak, orang tua, wali kelas, dan tim BK tanpa penghakiman."],
+                  ["Playful & non-patologis", "Asesmen ramah anak tanpa suasana ujian kaku dan tanpa stigma—memetakan potensi optimal serta area stimulasi."],
+                  ["Pemetaan tumbuh kembang mendalam", "Mengukur kematangan kognitif, sensorimotorik, fungsi eksekutif, regulasi emosi, dan gaya belajar (Visual, Auditori, Kinestetik)."],
                 ].map(([title, text]) => (
                   <li key={title} className="flex gap-4">
                     <span className="mt-0.5 flex size-9 shrink-0 items-center justify-center rounded-full bg-[#533484] text-[#ffd252]"><Check /></span>
@@ -340,7 +433,49 @@ export default function App() {
         </div>
       </section>
 
-      <section data-reveal aria-labelledby="comparison-title" className="bg-[#fbf8ff] py-24 sm:py-32">
+      <section data-reveal id="jenjang" className="scroll-mt-8 bg-[#fbf8ff] py-24 sm:py-32">
+        <div className="section-shell">
+          <div className="max-w-3xl">
+            <p className="eyebrow">Metodologi lintas jenjang</p>
+            <h2 className="section-title max-w-none!">Asesmen presisi sesuai tahap tumbuh kembang.</h2>
+            <p className="section-copy max-w-2xl!">
+              Araminda memadukan observasi tumbuh kembang klinis, baterai psikometri baku, dan tes proyektif adaptif yang disesuaikan untuk setiap fase usia.
+            </p>
+          </div>
+
+          <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            {stages.map((item) => (
+              <article
+                key={item.stage}
+                className="flex flex-col justify-between rounded-[1.75rem] border border-[#e8e0ef] bg-white p-6 shadow-[0_14px_45px_rgba(57,38,92,.07)] transition-transform duration-300 hover:-translate-y-1 sm:p-7"
+              >
+                <div>
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="rounded-full bg-[#efe8f8] px-3 py-1 text-xs font-medium text-[#533484]">
+                      {item.age}
+                    </span>
+                  </div>
+                  <h3 className="mt-5 text-2xl font-medium leading-tight text-[#3d2865]">{item.stage}</h3>
+                  <p className="mt-1 text-xs font-medium uppercase tracking-normal text-[#7652a6]">{item.focus}</p>
+                  <p className="mt-4 text-sm leading-6 text-[#6b6372]">{item.text}</p>
+                </div>
+                <ul aria-label={`Instrumen ${item.stage}`} className="mt-6 flex flex-wrap gap-1.5 border-t border-[#f0eaf6] pt-4">
+                  {item.instruments.map((instrument) => (
+                    <li
+                      key={instrument}
+                      className="rounded-full bg-[#fbf8ff] px-2.5 py-1 text-[11px] font-medium text-[#533484] ring-1 ring-[#e4daf0]"
+                    >
+                      {instrument}
+                    </li>
+                  ))}
+                </ul>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section data-reveal aria-labelledby="comparison-title" className="bg-[#f5f0fa] py-24 sm:py-32">
         <div className="section-shell">
           <div className="max-w-5xl">
             <div>
@@ -348,7 +483,7 @@ export default function App() {
               <h2 id="comparison-title" className="section-title max-w-none!">Pendekatan yang tepat memberi arah yang lebih utuh.</h2>
             </div>
             <p className="section-copy max-w-3xl!">
-              Bukan sekadar hasil tes atau label kepribadian. Araminda menerjemahkan psikologi perkembangan remaja menjadi panduan nyata yang dapat digunakan bersama.
+              Bukan sekadar skor kognitif atau pelabelan statis. Araminda menerjemahkan psikologi tumbuh kembang anak dan remaja menjadi panduan nyata bagi sekolah dan keluarga.
             </p>
           </div>
 
@@ -426,10 +561,10 @@ export default function App() {
             <span className="block text-white">tapi pendekatan tumbuh kembang utuh.</span>
           </h2>
 
-          <blockquote className="mx-auto mt-12 max-w-2xl text-white sm:mt-14">
+          <blockquote className="mx-auto mt-12 max-w-3xl text-white sm:mt-14">
             <p className="text-pretty text-base leading-8 text-white/85 sm:text-lg">
-              “Seluruh instrumen dan metode analisis Araminda dirancang langsung oleh{" "}
-              <strong className="font-medium text-white">Psikolog Spesialis Tumbuh Kembang Anak &amp; Remaja.</strong>”
+              “Seluruh instrumen observasi dan metode analisis Araminda dirancang serta disupervisi langsung oleh{" "}
+              <strong className="font-medium text-white">Psikolog Klinis Spesialis Tumbuh Kembang Anak &amp; Remaja</strong> yang aktif menangani ribuan kasus di klinik spesialis anak, pusat rehabilitasi provinsi, taman kanak-kanak, hingga sekolah menengah.”
             </p>
           </blockquote>
         </div>
@@ -437,10 +572,11 @@ export default function App() {
 
       <section data-reveal id="hasil" className="scroll-mt-8 bg-[#533484] py-24 text-white sm:py-32">
         <div className="section-shell">
-          <div className="max-w-3xl">
+          <div className="max-w-5xl">
             <p className="eyebrow text-white! before:bg-[#ffd252]!">Satu asesmen, tiga hasil</p>
             <h2 className="section-title w-full max-w-none! text-[clamp(2.25rem,4vw,3.5rem)]! text-[#ffce45]!">
-              Setiap pihak mendapat panduan yang bisa digunakan.
+              Setiap pihak mendapat
+              <span className="sm:block"> panduan yang bisa digunakan.</span>
             </h2>
           </div>
           <div className="mt-12 grid gap-5 lg:grid-cols-3">
@@ -468,12 +604,14 @@ export default function App() {
                     </svg>
                   )}
                 </div>
-                <p className="mt-8 text-xs font-medium uppercase tracking-[.16em] text-[#684497]">{item.label}</p>
+                <p className="mt-8 text-xs font-medium uppercase tracking-normal text-[#684497]">{item.label}</p>
                 <h3 className="mt-3 text-2xl font-medium leading-tight">{item.title}</h3>
                 <p className="mt-4 text-sm leading-6 text-[#71717a]">{item.text}</p>
               </article>
             ))}
           </div>
+
+          <PortalMockup />
 
           <div className="mx-0 mt-[120px] mb-0 border-t border-white/12 px-0 pt-[120px] pb-0">
             <div className="mx-auto max-w-2xl text-center">
@@ -481,6 +619,38 @@ export default function App() {
               <h3 className="mt-4 text-balance text-3xl font-medium leading-tight text-white sm:text-4xl">
                 Perubahan nyata yang terukur
               </h3>
+              <div
+                role="tablist"
+                aria-label="Pilih jenjang dampak"
+                className="mt-7 inline-flex rounded-full bg-white/10 p-1.5 backdrop-blur-xs"
+              >
+                <button
+                  type="button"
+                  role="tab"
+                  aria-selected={outcomeTrack === "early"}
+                  onClick={() => setOutcomeTrack("early")}
+                  className={`cursor-pointer rounded-full px-5 py-2 text-xs font-medium transition-colors sm:text-sm ${
+                    outcomeTrack === "early"
+                      ? "bg-[#ffd252] text-[#3d2865]"
+                      : "text-white/80 hover:text-white"
+                  }`}
+                >
+                  Usia Dini (PAUD–SD)
+                </button>
+                <button
+                  type="button"
+                  role="tab"
+                  aria-selected={outcomeTrack === "teen"}
+                  onClick={() => setOutcomeTrack("teen")}
+                  className={`cursor-pointer rounded-full px-5 py-2 text-xs font-medium transition-colors sm:text-sm ${
+                    outcomeTrack === "teen"
+                      ? "bg-[#ffd252] text-[#3d2865]"
+                      : "text-white/80 hover:text-white"
+                  }`}
+                >
+                  Remaja (SMP–SMA)
+                </button>
+              </div>
             </div>
 
             <div data-timeline-progress className="relative mt-12">
@@ -494,7 +664,7 @@ export default function App() {
               />
               <div className="grid gap-10 md:grid-cols-3 md:gap-8">
                 {outcomes.map((outcome, index) => (
-                  <article key={outcome.period} className="relative grid grid-cols-[24px_1fr] gap-7 md:block md:text-center">
+                  <article key={`${outcomeTrack}-${outcome.period}`} className="relative grid grid-cols-[24px_1fr] gap-7 md:block md:text-center">
                     {index < outcomes.length - 1 && (
                       <div aria-hidden="true" className="absolute -bottom-[52px] left-[11px] top-3 w-px bg-white/25 md:hidden">
                         <span data-timeline-segment className="timeline-segment-progress absolute inset-0 bg-[#ffd252]" />
@@ -527,12 +697,12 @@ export default function App() {
             </p>
           </div>
 
-          <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-12 flex flex-wrap justify-center gap-4">
             {team.map((member, index) => (
               <article
                 data-reveal
                 key={member.name}
-                className="group/profile px-3 pb-8 pt-4"
+                className="group/profile w-full px-3 pb-8 pt-4 sm:w-[calc(50%-0.5rem)] lg:w-[calc(33.333%-0.75rem)] lg:max-w-[20rem]"
               >
                 <div
                   data-parallax={`${0.014 + index * 0.004}`}
@@ -581,7 +751,7 @@ export default function App() {
             <div>
               <p className="eyebrow">Mudah diintegrasikan</p>
               <h2 className="section-title">Dari kebutuhan sekolah menuju aksi nyata.</h2>
-              <p className="section-copy">Proses terstruktur yang tetap terasa personal bagi seluruh angkatan.</p>
+              <p className="section-copy">Proses terstruktur yang tetap terasa personal bagi anak, remaja, wali kelas, dan orang tua.</p>
             </div>
             <ol data-parallax="0.018" className="space-y-3">
               {steps.map(([title, text], index) => (
@@ -613,7 +783,7 @@ export default function App() {
             <h2 className="mt-5 text-balance text-4xl font-medium leading-[1.15] tracking-[-.04em] sm:text-6xl sm:leading-[1.12] lg:leading-[64px]">
               Mari siapkan masa depan siswa dengan lebih tenang.
             </h2>
-            <p className="mt-6 w-full max-w-none text-base leading-7 text-zinc-500 lg:whitespace-nowrap">Mulai dari percakapan singkat tentang kebutuhan siswa dan sekolah Anda.</p>
+            <p className="mt-6 w-full max-w-none text-base leading-7 text-zinc-500 lg:whitespace-nowrap">Mulai dari percakapan singkat tentang kebutuhan anak, siswa, dan sekolah Anda.</p>
             <a href="https://wa.me/6285110500252" className="button mt-8 bg-white text-[#3d2865]">
               Hubungi Araminda <ArrowUpRight />
             </a>
@@ -685,6 +855,7 @@ export default function App() {
           </div>
           <div className="flex gap-6 text-sm text-white/70">
             <a href="#pendekatan" className="hover:text-white">Pendekatan</a>
+            <a href="#jenjang" className="hover:text-white">Jenjang</a>
             <a href="#hasil" className="hover:text-white">Hasil</a>
             <a href="mailto:halo@araminda.id" className="hover:text-white">Kontak</a>
           </div>

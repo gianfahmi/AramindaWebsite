@@ -181,21 +181,12 @@ const team = [
     description: "Product designer dengan pengalaman lebih dari 10 tahun di industri kreatif, digital, dan teknologi.",
   },
   {
-    name: "Rafil Ibnu",
-    role: "Project Manager",
-    image: "/assets/dac76.png",
-    imageRotation: 1.59,
-    nameRotation: -1.75,
-    roleRotation: 0.47,
-    description: "Memastikan pengembangan berjalan terstruktur, kolaboratif, dan tepat sasaran hingga implementasi.",
-  },
-  {
     name: "Ayang Suhendar",
     role: "Project Manager",
     image: "/assets/ayang-suhendar.jpg",
-    imageRotation: -2.1,
-    nameRotation: 1.35,
-    roleRotation: -1.1,
+    imageRotation: 1.59,
+    nameRotation: -1.75,
+    roleRotation: 0.47,
     description: "Mengawal koordinasi lapangan, ketepatan jadwal asesmen, serta kelancaran kolaborasi dengan pihak sekolah.",
   },
 ]
@@ -697,12 +688,12 @@ export default function App() {
             </p>
           </div>
 
-          <div className="mt-12 flex flex-wrap justify-center gap-4">
+          <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {team.map((member, index) => (
               <article
                 data-reveal
                 key={member.name}
-                className="group/profile w-full px-3 pb-8 pt-4 sm:w-[calc(50%-0.5rem)] lg:w-[calc(33.333%-0.75rem)] lg:max-w-[20rem]"
+                className="group/profile px-3 pb-8 pt-4"
               >
                 <div
                   data-parallax={`${0.014 + index * 0.004}`}
